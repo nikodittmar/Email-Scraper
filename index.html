@@ -142,7 +142,7 @@
       async function getEmails() {
         let response;
         try {
-          response = await gapi.client.gmail.users.messages.list({
+          response = await gapi.client.gmail.users.messages.get({
             'userId': 'me',
             'maxResults': '500',
             'labelIds': 'SENT'
@@ -152,15 +152,25 @@
           return;
         }
         const emails = response.result.messages;
-        if (!emails || emails.length == 0) {
-          document.getElementById('content').innerText = 'No labels found.';
-          return;
+
+        let batch = gapi.client.newBatch();
+        let emailContentsRequest = function(emailId) {
+          return gapi.client.gmail.users.messages.get({
+            'id': emailId,
+            'userId': 'me',
+            'format': 'full',
+            'metadataHeaders': ''
+          })
         }
-        const output = emails.reduce(
-            (str, email) => `${str}${email}\n`,
-            'Labels:\n');
-        document.getElementById('content').innerText = output;
-        console.log(emails);
+        emails.forEach(function(email){
+          let emailContents = emailContentsRequest(email.id)
+          batch.add(emailContents);
+        })
+
+        batch.then(function(response){
+          console.log(response);
+        })
+        
       }
     </script>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
