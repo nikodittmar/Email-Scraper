@@ -86,7 +86,7 @@
           }
           document.getElementById('signout_button').style.visibility = 'visible';
           document.getElementById('authorize_button').innerText = 'Refresh';
-          await listLabels();
+          await getEmails();
         };
 
         if (gapi.client.getToken() === null) {
@@ -145,11 +145,21 @@
           response = await gapi.client.gmail.users.messages.list({
             'userId': 'me',
             'maxResults': '500'
+            'labelIds': 'SENT'
           })
         } catch (err) {
           document.getElementById('content').innerText = err.message;
           return;
         }
+        const emails = response.result.messages;
+        if (!emails || emails.length == 0) {
+          document.getElementById('content').innerText = 'No labels found.';
+          return;
+        }
+        const output = emails.reduce(
+            (str, email) => `${str}${email.body}\n`,
+            'Labels:\n');
+        document.getElementById('content').innerText = output;
       }
     </script>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
