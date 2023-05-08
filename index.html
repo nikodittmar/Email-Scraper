@@ -142,7 +142,7 @@
       async function getEmails() {
         let response;
         try {
-          response = await gapi.client.gmail.users.messages.get({
+          response = await gapi.client.gmail.users.messages.list({
             'userId': 'me',
             'maxResults': '500',
             'labelIds': 'SENT'
@@ -154,7 +154,21 @@
         const emails = response.result.messages;
         console.log(emails);
 
+        let batch = gapi.client.newBatch();
+
+        const getEmailContent = gapi.client.gmail.users.messages.get({
+            'userId': 'me',
+            'format': 'full',
+            'metadataHeaders': ''
+        })
         
+        emails.forEach(function(email) {
+          batch.add(getEmailContent, {'Id': email.id});
+        })
+
+        batch.then(function(response){
+          console.log(response);
+        })
         
       }
     </script>
