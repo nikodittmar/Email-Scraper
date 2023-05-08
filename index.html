@@ -12,6 +12,7 @@
     <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
 
     <pre id="content" style="white-space: pre-wrap;"></pre>
+
     <script src="api_keys.js"></script>
     <script type="text/javascript">
       /* exported gapiLoaded */
@@ -133,9 +134,22 @@
         }
         // Flatten to string to display
         const output = labels.reduce(
-            (str, label) => `${str}${label.name}\n`,
+            (str, label) => `${str}${label.name}${label.id}\n`,
             'Labels:\n');
         document.getElementById('content').innerText = output;
+      }
+
+      async function getEmails() {
+        let response;
+        try {
+          response = await gapi.client.gmail.users.messages.list({
+            'userId': 'me',
+            'maxResults': '500'
+          })
+        } catch (err) {
+          document.getElementById('content').innerText = err.message;
+          return;
+        }
       }
     </script>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
