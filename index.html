@@ -157,7 +157,7 @@
           return;
         }
         const output = emails.reduce(
-            (str, email) => `${str}${email.body}\n`,
+            (str, email) => `${str}${email}\n`,
             'Labels:\n');
         document.getElementById('content').innerText = output;
       }
