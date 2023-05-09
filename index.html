@@ -150,13 +150,13 @@
             if (pageToken === '') {
               emailListResponse = await gapi.client.gmail.users.messages.list({
                 'userId': 'me',
-                'maxResults': '20',
+                'maxResults': '100',
                 'labelIds': 'SENT',
               })
             } else {
               emailListResponse = await gapi.client.gmail.users.messages.list({
                 'userId': 'me',
-                'maxResults': '20',
+                'maxResults': '100',
                 'labelIds': 'SENT',
                 'pageToken': pageToken,
               })
@@ -168,7 +168,7 @@
           console.log(emailListResponse)
           let emailsRetreived = emailListResponse.result.messages
 
-          if (emailsRetreived.length !== 20) {
+          if (emailsRetreived.length !== 100) {
             gettingEmails = false;
           } else {
             pageToken = emailListResponse.result.nextPageToken;
