@@ -180,7 +180,32 @@
         console.log(emails)
 
         const batchCount = Math.ceil(emails.length / 25)
-        console.log(batchCount)
+        let batchNumber = 0;
+        
+        async function getEmailThreads() {
+          const batch = gapi.client.newBatch();
+          for (let i = 0; i < 25; i ++) {
+            const index = (batchNumber * 25) + i
+            batch.add(gapi.client.users.threads.get({
+              'format': 'full',
+              'userId': 'me',
+              'metadataHeaders': '',
+              'id': emails[i].threadId
+            }))
+          }
+          let threadList;
+          try {
+            await batch.then(function(response) { 
+              threadList = response.result 
+              batchNumber += 1;
+              console.log(threadList);
+              setTimeout(getEmailThreads(), 100)
+            })
+          } catch(err) {
+            document.getElementById('content').innerText = err.message;
+            return;
+          }
+        }
         
       }
     </script>
