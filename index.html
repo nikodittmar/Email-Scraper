@@ -144,7 +144,7 @@
         try {
           response = await gapi.client.gmail.users.messages.list({
             'userId': 'me',
-            'maxResults': '500',
+            'maxResults': '20',
             'labelIds': 'SENT'
           })
         } catch (err) {
@@ -158,11 +158,16 @@
         const getEmailContent = gapi.client.gmail.users.messages.get({
             'userId': 'me',
             'format': 'full',
-            'metadataHeaders': ''
         })
         
         emails.forEach(function(email) {
-          batch.add(getEmailContent, {'id': email.id});
+          console.log(email)
+          console.log(email.id)
+          batch.add(gapi.client.gmail.users.messages.get({
+            'userId': 'me',
+            'id': email.id,
+            'format': 'full',
+          }));
         })
 
         let finalResponse;
