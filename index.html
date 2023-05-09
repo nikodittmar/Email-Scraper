@@ -162,7 +162,7 @@
         })
         
         emails.forEach(function(email) {
-          batch.add(getEmailContent, {'Id': email.id});
+          batch.add(getEmailContent, {'id': email.id});
         })
 
         let finalResponse;
