@@ -202,7 +202,7 @@
               threadList = response.result 
               console.log(response)
               batchNumber += 1;
-              threads = threads.concat(response.result)
+              threads = threads.concat(Object.values(response.result))
             })
           } catch(err) {
             document.getElementById('content').innerText = err.message;
