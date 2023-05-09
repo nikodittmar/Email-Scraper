@@ -181,6 +181,8 @@
 
         const batchCount = Math.ceil(emails.length / 25)
         let batchNumber = 0;
+
+        getEmailThreads()
         
         async function getEmailThreads() {
           const batch = gapi.client.newBatch();
@@ -192,10 +194,12 @@
               'metadataHeaders': '',
               'id': emails[i].threadId
             }))
+            console.log('adding');
           }
           let threadList;
+          let response;
           try {
-            await batch.then(function(response) { 
+            response = await batch.then(function(response) { 
               threadList = response.result 
               batchNumber += 1;
               console.log(threadList);
@@ -208,8 +212,6 @@
             return;
           }
         }
-
-        getEmailThreads()
         
       }
     </script>
