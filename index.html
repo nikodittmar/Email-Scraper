@@ -153,13 +153,6 @@
         }
         const emails = response.result.messages;
 
-        let batch = gapi.client.newBatch();
-
-        const getEmailContent = gapi.client.gmail.users.messages.get({
-            'userId': 'me',
-            'format': 'full',
-        })
-
         console.log(emails)
         
         emails.forEach(function(email) {
