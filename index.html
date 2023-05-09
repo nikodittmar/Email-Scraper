@@ -185,8 +185,8 @@
         let threads = [];
 
         getEmailThreads()
-        
-        async function getEmailThreads() {
+
+        var i = setInterval(async function(){
           const batch = gapi.client.newBatch();
           for (let i = 0; i < 25; i ++) {
             const index = (batchNumber * 25) + i
@@ -204,15 +204,19 @@
               threadList = response.result 
               batchNumber += 1;
               threads = threads.concat(response.result)
-              if (batchNumber !== (batchCount - 1)) {
-                setTimeout(getEmailThreads(), 100)
-              }
+              console.log(threads);
             })
           } catch(err) {
             document.getElementById('content').innerText = err.message;
             return;
           }
-        }
+          batchNumber++;
+          if (batchNumber === (batchCount - 1)) {
+            clearInterval(i)
+          }
+        }, 100);
+        
+        
         console.log(threads);
       }
     </script>
