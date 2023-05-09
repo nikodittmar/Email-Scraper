@@ -159,8 +159,13 @@
 
           if (emailsRetreived.length !== 20) {
             gettingEmails = false;
+            console.log('done!');
+          } else {
+            console.log('getting more!')
+
           }
           emails.push(emailsRetreived)
+          console.log(emailsRetreived)
         }
 
         console.log(emails)
