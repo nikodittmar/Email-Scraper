@@ -200,7 +200,6 @@
           try {
             response = await batch.then(function(response) { 
               threadList = response.result 
-              console.log(response)
               batchNumber += 1;
               threads = threads.concat(Object.values(response.result))
             })
