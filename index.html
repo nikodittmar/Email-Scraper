@@ -173,6 +173,8 @@
           } else {
             pageToken = emailListResponse.result.nextPageToken;
           }
+
+          emails.push(emailsRetreived)
         }
 
         console.log(emails)
