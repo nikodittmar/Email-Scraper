@@ -155,6 +155,7 @@
             document.getElementById('content').innerText = err.message;
             return;
           }
+          console.log(emailListResponse)
           let emailsRetreived = emailListResponse.result.messages
 
           if (emailsRetreived.length !== 20) {
