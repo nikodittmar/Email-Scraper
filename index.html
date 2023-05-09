@@ -174,7 +174,7 @@
             pageToken = emailListResponse.result.nextPageToken;
           }
 
-          emails.concat(emailsRetreived)
+          emails = emails.concat(emailsRetreived)
         }
 
         console.log(emails)
