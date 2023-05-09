@@ -148,18 +148,19 @@
           try {
             emailListResponse = await gapi.client.gmail.users.messages.list({
               'userId': 'me',
-              'maxResults': '500',
+              'maxResults': '20',
               'labelIds': 'SENT'
             })
           } catch (err) {
             document.getElementById('content').innerText = err.message;
             return;
           }
-          emails.append(emailListResponse.result.messages);
+          let emailsRetreived = emailListResponse.result.messages
 
-          if (emailListResponse.result.messages.length !== 500) {
+          if (emailsRetreived.length !== 20) {
             gettingEmails = false;
           }
+          emails.append(emailsRetreived)
         }
 
         console.log(emails)
