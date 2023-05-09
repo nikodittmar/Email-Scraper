@@ -188,7 +188,7 @@
           const batch = gapi.client.newBatch();
           for (let i = 0; i < 25; i ++) {
             const index = (batchNumber * 25) + i
-            batch.add(gapi.client.users.threads.get({
+            batch.add(gapi.client.gmail.users.threads.get({
               'format': 'full',
               'userId': 'me',
               'metadataHeaders': '',
