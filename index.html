@@ -142,15 +142,25 @@
       async function getEmails() {
         let emails = [];
         let gettingEmails = true;
+        let pageToken = '';
 
         while (gettingEmails) {
           let emailListResponse;
           try {
-            emailListResponse = await gapi.client.gmail.users.messages.list({
-              'userId': 'me',
-              'maxResults': '20',
-              'labelIds': 'SENT'
-            })
+            if (pageToken === '') {
+              emailListResponse = await gapi.client.gmail.users.messages.list({
+                'userId': 'me',
+                'maxResults': '20',
+                'labelIds': 'SENT',
+              })
+            } else {
+              emailListResponse = await gapi.client.gmail.users.messages.list({
+                'userId': 'me',
+                'maxResults': '20',
+                'labelIds': 'SENT',
+                'pageToken': pageToken,
+              })
+            }
           } catch (err) {
             document.getElementById('content').innerText = err.message;
             return;
@@ -160,17 +170,12 @@
 
           if (emailsRetreived.length !== 20) {
             gettingEmails = false;
-            console.log('done!');
           } else {
-            console.log('getting more!')
-
+            pageToken = emailListResponse.result.nextPageToken;
           }
-          emails.push(emailsRetreived)
-          console.log(emailsRetreived)
         }
 
         console.log(emails)
-        console.log(emailListResponse)
 
         
       }
