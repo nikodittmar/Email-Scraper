@@ -199,13 +199,17 @@
               threadList = response.result 
               batchNumber += 1;
               console.log(threadList);
-              setTimeout(getEmailThreads(), 100)
+              if (batchNumber !== (batchCount - 1)) {
+                setTimeout(getEmailThreads(), 100)
+              }
             })
           } catch(err) {
             document.getElementById('content').innerText = err.message;
             return;
           }
         }
+
+        getEmailThreads()
         
       }
     </script>
