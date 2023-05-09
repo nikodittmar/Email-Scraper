@@ -161,7 +161,7 @@
           batch.add(gapi.client.gmail.users.messages.get({
             'userId': 'me',
             'id': email.id,
-            'format': 'full',
+            'format': 'raw',
             'metadataHeaders': ''
           }));
         })
