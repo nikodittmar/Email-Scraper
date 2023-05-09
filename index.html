@@ -183,9 +183,7 @@
         let batchNumber = 0;
 
         let threads = [];
-
-        getEmailThreads()
-
+        
         var i = setInterval(async function(){
           const batch = gapi.client.newBatch();
           for (let i = 0; i < 25; i ++) {
