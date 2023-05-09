@@ -140,39 +140,30 @@
       }
 
       async function getEmails() {
-        let response;
-        try {
-          response = await gapi.client.gmail.users.messages.list({
-            'userId': 'me',
-            'maxResults': '20',
-            'labelIds': 'SENT'
-          })
-        } catch (err) {
-          document.getElementById('content').innerText = err.message;
-          return;
+        let emails = [];
+        let gettingEmails = true;
+
+        while (gettingEmails) {
+          let emailListResponse;
+          try {
+            emailListResponse = await gapi.client.gmail.users.messages.list({
+              'userId': 'me',
+              'maxResults': '500',
+              'labelIds': 'SENT'
+            })
+          } catch (err) {
+            document.getElementById('content').innerText = err.message;
+            return;
+          }
+          emails.append(emailListResponse.result.messages);
+
+          if (emailListResponse.result.messages.length !== 500) {
+            gettingEmails = false;
+          }
         }
-        const emails = response.result.messages;
 
         console.log(emails)
-
-        const batch = gapi.client.newBatch();
-        
-        emails.forEach(function(email) {
-          batch.add(gapi.client.gmail.users.messages.get({
-            'userId': 'me',
-            'id': email.id,
-            'format': 'full',
-            'metadataHeaders': ''
-          }));
-        })
-
-        let response2;
-        try {
-          response2 = await batch.then(function(response) { console.log(response) })
-        } catch(err) {
-          document.getElementById('content').innerText = err.message;
-          return;
-        }
+        console.log(emailListResponse)
 
         
       }
