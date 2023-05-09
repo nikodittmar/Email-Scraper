@@ -159,32 +159,16 @@
             'userId': 'me',
             'format': 'full',
         })
+
+        console.log(emails)
         
         emails.forEach(function(email) {
           console.log(email)
           console.log(email.id)
-          batch.add(gapi.client.gmail.users.messages.get({
-            'userId': 'me',
-            'id': email.id,
-            'format': 'full',
-          }));
+          
         })
 
-        let finalResponse;
-        try {
-          finalResponse = await batch()
-
-        } catch (err) {
-          document.getElementById('content').innerText = err.message;
-          return;
-        }
-        let result = finalResponse.result.messages;
-        console.log(result);
-
-        const output = result.reduce(
-            (str, email) => `${str}${email}\n`,
-            'Labels:\n');
-        document.getElementById('content').innerText = output;
+        
       }
     </script>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
