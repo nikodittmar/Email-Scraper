@@ -154,11 +154,13 @@
         const emails = response.result.messages;
 
         console.log(emails)
+
+        const batch = gapi.client.newBatch();
         
         emails.forEach(function(email) {
+          
           console.log(email)
           console.log(email.id)
-          
         })
 
         
