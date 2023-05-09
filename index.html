@@ -183,7 +183,7 @@
         let batchNumber = 0;
 
         let threads = [];
-        
+
         var i = setInterval(async function(){
           const batch = gapi.client.newBatch();
           for (let i = 0; i < 25; i ++) {
@@ -200,9 +200,9 @@
           try {
             response = await batch.then(function(response) { 
               threadList = response.result 
+              console.log(response)
               batchNumber += 1;
               threads = threads.concat(response.result)
-              console.log(threads);
             })
           } catch(err) {
             document.getElementById('content').innerText = err.message;
@@ -211,11 +211,16 @@
           batchNumber++;
           if (batchNumber === (batchCount - 1)) {
             clearInterval(i)
+            console.log(threads);
+
+            const output = threads.reduce(
+            (str, thread) => `${str}${thread.name}${thread.id}\n`,
+            'Labels:\n');
+            document.getElementById('content').innerText = output;
           }
         }, 100);
         
         
-        console.log(threads);
       }
     </script>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
