@@ -212,10 +212,17 @@
             clearInterval(i)
             console.log(threads);
 
-            const output = threads.reduce(
-            (str, thread) => `${str}${thread.name}${thread.id}\n`,
-            'Labels:\n');
-            document.getElementById('content').innerText = output;
+            let str = ''
+
+            threads.forEach(function(thread) {
+              thread.result.messages.forEach(function(message) {
+                
+                str = str.concat(`${message.snippet}\n`)
+              })
+              str = str.concat(`---------------------------------------------\n`)
+            })
+            
+            document.getElementById('content').innerText = str;
           }
         }, 100);
         
