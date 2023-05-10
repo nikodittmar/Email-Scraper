@@ -178,7 +178,7 @@
         }
 
         console.log(emails)
-
+        /*
         const batchCount = Math.ceil(emails.length / 25)
         let batchNumber = 0;
 
@@ -223,9 +223,56 @@
             })
             
             document.getElementById('content').innerText = str;
+            
           }
         }, 100);
+        */
+
+        const batchCount = Math.ceil(emails.length / 50)
+        let batchNumber = 0;
+
+        let messages = [];
         
+        var i = setInterval(async function(){
+          const batch = gapi.client.newBatch();
+          for (let i = 0; i < 50; i ++) {
+            const index = (batchNumber * 25) + i
+            batch.add(gapi.client.gmail.users.messages.get({
+              'format': 'full',
+              'userId': 'me',
+              'metadataHeaders': '',
+              'id': emails[i].id
+            }))
+          }
+          let messagesList;
+          let response;
+          try {
+            response = await batch.then(function(response) { 
+              messagesList = response.result 
+              print(response)
+              batchNumber += 1;
+              messages = messages.concat(Object.values(response.result))
+            })
+          } catch(err) {
+            document.getElementById('content').innerText = err.message;
+            return;
+          }
+          batchNumber++;
+          if (batchNumber === (batchCount - 1)) {
+            clearInterval(i)
+            console.log(messages);
+
+            let str = ''
+
+            messages.forEach(function(message) {
+              str = str.concat(`${message.snippet}\n`)
+              str = str.concat(`---------------------------------------------\n`)
+            })
+            
+            document.getElementById('content').innerText = str;
+            
+          }
+        }, 100);
         
       }
     </script>
